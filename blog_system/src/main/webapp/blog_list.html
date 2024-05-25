@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客列表页</title>
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_list.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+    <!-- 导航栏. nav 是 导航 这个词的缩写 -->
+    <div class="nav">
+        <!-- logo -->
+        <img src="image/logo2.jpg" alt="">
+        <div class="title">我的博客系统</div>
+        <!-- 只是一个空白, 用来把后面的链接挤过去 -->
+        <!-- 这是一个简单粗暴的写法~~ -->
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <!-- 这里的地址回头再说 -->
+        <a href="logout">注销</a>
+    </div>
+
+    <!-- 页面的主体部分 -->
+    <div class="container">
+        <!-- 左侧信息 -->
+        <div class="container-left">
+            <!-- 这个 div 表示整个用户信息的区域 -->
+            <div class="card">
+                <!-- 用户的头像 -->
+                <img src="image/kun.jpg" alt="">
+                <!-- 用户名 -->
+                <h3></h3>
+                <!-- github 地址 -->
+                <a href="https://www.github.com">github 地址</a>
+                <!-- 统计信息 -->
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+        <!-- 右侧信息 -->
+        <div class="container-right">
+            <!-- 这个 div 表示一个 博客  -->
+            <!-- <div class="blog">
+                <div class="title">我的第一篇博客博客博客博客</div>
+                <div class="date">2023-05-11 20:00:00</div>
+                <div class="desc">
+                    从今天起, 我要认真敲代码. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Debitis repellendus voluptatum, reiciendis rem consectetur incidunt aspernatur eveniet excepturi magni quis sint, provident est at et pariatur dolorem aliquid fugit voluptatem.
+                </div>
+                <a href="blog_detail.html?blogId=1">查看全文 &gt;&gt; </a>
+            </div> -->
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        // 把这样的代码封装到函数里. 
+        // js 中定义函数, 使用 function 关键字. 不必写返回值类型. ( ) 也是形参列表. 不必写形参的类型
+        function getBlogs() {
+            $.ajax({
+                type: 'get',
+                url: 'blog',
+                success: function(body) {
+                    // 服务器成功响应之后, 调用的回调函数. 
+                    let containerDiv = document.querySelector('.container-right');
+                    for (let i = 0; i < body.length; i++) {
+                        // blog 就是一个形如 { blogId: 1, title: "这是标题" .... }
+                        let blog = body[i];
+
+                        // 构建整个博客
+                        let blogDiv = document.createElement('div');
+                        blogDiv.className = 'blog';
+                        // 构建标题
+                        let titleDiv = document.createElement('div');
+                        titleDiv.className = 'title';
+                        titleDiv.innerHTML = blog.title;
+                        // 构建发布时间
+                        let dateDiv = document.createElement('div');
+                        dateDiv.className = 'date';
+                        dateDiv.innerHTML = blog.postTime;
+                        // 构建博客的摘要
+                        let descDiv = document.createElement('div');
+                        descDiv.className = 'desc';
+                        descDiv.innerHTML = blog.content;
+                        // 构造 "查看全文按钮"
+                        let a = document.createElement("a");
+                        a.innerHTML = '查看全文 &gt;&gt;'
+                        // 点击不同的博客, 要跳转到不同的博客详情页. 
+                        a.href = 'blog_detail.html?blogId=' + blog.blogId;
+
+                        // 上面的操作完成了每个零件的创建. 还需要往一起进行组装. 
+                        blogDiv.appendChild(titleDiv);
+                        blogDiv.appendChild(dateDiv);
+                        blogDiv.appendChild(descDiv);
+                        blogDiv.appendChild(a);
+                        // 把 blogDiv 最终组装到页面上. 
+                        containerDiv.appendChild(blogDiv);
+                    }
+                }
+            });
+        }
+        // 定义完函数, 还需要调用, 才能执行
+        getBlogs();
+
+        getLoginStatus();
+
+        // 获取当前登录的用户信息
+        function getUserInfo() {
+            $.ajax({
+                type: 'get',
+                url: 'userInfo',
+                success: function(user) {
+                    // 把拿到的响应数据, 取出其中的 username, 设置到页面的 h3 标签中!
+                    let h3 = document.querySelector('.card h3');
+                    h3.innerHTML = user.username;
+                }
+            });
+        }
+        getUserInfo();
+    </script>
+</body>
+</html>

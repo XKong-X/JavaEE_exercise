@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客详情页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_detail.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <!-- 引入 editor.md 的依赖 -->
+    <!-- 先引入 jquery, 再引入 editor.md, 顺序不能反 -->
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css" />
+    <script src="editor.md/lib/marked.min.js"></script>
+    <script src="editor.md/lib/prettify.min.js"></script>
+    <script src="editor.md/editormd.js"></script>
+</head>
+<body>
+    <!-- 导航栏. nav 是 导航 这个词的缩写 -->
+    <div class="nav">
+        <!-- logo -->
+        <img src="image/logo2.jpg" alt="">
+        <div class="title">我的博客系统</div>
+        <!-- 只是一个空白, 用来把后面的链接挤过去 -->
+        <!-- 这是一个简单粗暴的写法~~ -->
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <!-- 这里的地址回头再说 -->
+        <a href="logout">注销</a>
+    </div>
+    <!-- 页面的主体部分 -->
+    <div class="container">
+        <!-- 左侧信息 -->
+        <div class="container-left">
+            <!-- 这个 div 表示整个用户信息的区域 -->
+            <div class="card">
+                <!-- 用户的头像 -->
+                <img src="image/kun.jpg" alt="">
+                <!-- 用户名 -->
+                <h3></h3>
+                <!-- github 地址 -->
+                <a href="https://www.github.com">github 地址</a>
+                <!-- 统计信息 -->
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧信息 -->
+        <div class="container-right">
+            <h3></h3>
+            <div class="date"></div>
+            <div class="content" id="content">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function getBlog() {
+            $.ajax({
+                type: 'get',
+                url: 'blog' + location.search,   // 这里需要带上 blogId 参数. 
+                success: function(blog) {
+                    // blog 就是返回的一篇博客的内容. 
+                    // 形如 { blogId: 1, title: "这是标题", ..... }
+                    let h3 = document.querySelector('.container-right h3');
+                    h3.innerHTML = blog.title;
+                    let dateDiv = document.querySelector('.container-right .date');
+                    dateDiv.innerHTML = blog.postTime;
+                    // 这种设置方式, 页面显示的是 md 的原始内容. 希望对这个内容进行渲染成 html
+                    // let contentDiv = document.querySelector('.container-right .content');
+                    // contentDiv.innerHTML = blog.content;
+                    // 这个方法第一个参数, 必须是一个 html 标签的 id 属性. 
+                    editormd.markdownToHTML('content', { markdown: blog.content });
+                }
+            })
+        }
+
+        getBlog();
+
+        // 判定当前用户是否是已经登录的状态. 
+        getLoginStatus();
+
+        function getAuthorInfo() {
+            $.ajax({
+                type: 'get',
+                url: 'getAuthorInfo' + location.search,
+                success: function(user) {
+                    // 把拿到的 user 对象, 取出其中的 username, 设置到页面上. 
+                    let h3 = document.querySelector('.card h3');
+                    h3.innerHTML = user.username;
+                }
+            });
+        }
+
+        getAuthorInfo();
+    </script>
+</body>
+</html>
