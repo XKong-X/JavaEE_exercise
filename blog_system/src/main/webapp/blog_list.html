@@ -64,17 +64,13 @@
 
     <script src="js/app.js"></script>
     <script>
-        // 把这样的代码封装到函数里. 
-        // js 中定义函数, 使用 function 关键字. 不必写返回值类型. ( ) 也是形参列表. 不必写形参的类型
         function getBlogs() {
             $.ajax({
                 type: 'get',
                 url: 'blog',
                 success: function(body) {
-                    // 服务器成功响应之后, 调用的回调函数. 
                     let containerDiv = document.querySelector('.container-right');
-                    for (let i = 0; i < body.length; i++) {
-                        // blog 就是一个形如 { blogId: 1, title: "这是标题" .... }
+                    for (let i = 0; i < body.length; ++i) {
                         let blog = body[i];
 
                         // 构建整个博客
@@ -88,39 +84,37 @@
                         let dateDiv = document.createElement('div');
                         dateDiv.className = 'date';
                         dateDiv.innerHTML = blog.postTime;
-                        // 构建博客的摘要
+                        // 构建博客摘要
                         let descDiv = document.createElement('div');
                         descDiv.className = 'desc';
                         descDiv.innerHTML = blog.content;
-                        // 构造 "查看全文按钮"
-                        let a = document.createElement("a");
+                        // 构造 “查看全文” 按钮
+                        let a = document.createElement('a');
                         a.innerHTML = '查看全文 &gt;&gt;'
-                        // 点击不同的博客, 要跳转到不同的博客详情页. 
+                        // 跳转博客详情页
                         a.href = 'blog_detail.html?blogId=' + blog.blogId;
 
-                        // 上面的操作完成了每个零件的创建. 还需要往一起进行组装. 
+                        // 组装
                         blogDiv.appendChild(titleDiv);
                         blogDiv.appendChild(dateDiv);
                         blogDiv.appendChild(descDiv);
-                        blogDiv.appendChild(a);
-                        // 把 blogDiv 最终组装到页面上. 
+                        blogDiv.appendChild(a)
+                        // 把 blogDiv 加到页面上
                         containerDiv.appendChild(blogDiv);
                     }
                 }
             });
         }
-        // 定义完函数, 还需要调用, 才能执行
         getBlogs();
 
         getLoginStatus();
 
-        // 获取当前登录的用户信息
+        // 获取用户信息
         function getUserInfo() {
             $.ajax({
-                type: 'get',
+                typr: 'get',
                 url: 'userInfo',
                 success: function(user) {
-                    // 把拿到的响应数据, 取出其中的 username, 设置到页面的 h3 标签中!
                     let h3 = document.querySelector('.card h3');
                     h3.innerHTML = user.username;
                 }
