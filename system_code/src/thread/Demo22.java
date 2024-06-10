@@ -9,7 +9,7 @@ package thread;
  * Version:
  */
 class SingletonLazy {
-    private static SingletonLazy instance = null;
+    private static volatile SingletonLazy instance = null;
 
     public static SingletonLazy getInstance() {
         // 判断是否已加过锁，从而避免重复加锁
