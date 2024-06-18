@@ -1,6 +1,5 @@
 package thread;
 
-import java.sql.SQLOutput;
 
 /**
  * Created with IntelliJ IDEA.
