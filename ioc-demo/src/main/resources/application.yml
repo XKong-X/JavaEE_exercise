@@ -1,0 +1,32 @@
+#server:
+#  port: 9092
+#spring:
+#  datasource:
+#    url:
+#    username:
+#    password:
+demo:
+  key1: hello,yml
+  key2: key2
+  key3: 10
+
+string:
+  str1: Hello \n Spring Boot.
+  str2: 'Hello \n Spring Boot.'
+  str3: "Hello \n Spring Boot."
+
+student:
+  id: 18
+  name: lisi
+  age: 12
+
+dbtypes:
+  name:
+    - mysql
+    - sqlserver
+    - db2
+
+  map:
+    k1: kk1
+    k2: kk2
+    k3: kk3
