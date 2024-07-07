@@ -1,0 +1,20 @@
+kaptcha:
+  image:
+    width: 120
+    height: 60
+  textproducer:
+    font:
+      size: 36
+  items:
+    # home captcha
+    home:
+      path: /home/captcha
+      session:
+        key: HOME_KAPTCHA_SESSION_KEY
+        date: HOME_KAPTCHA_SESSION_DATE
+#  # admin captcha
+#    admin:
+#      path: /admin/captcha
+#      session:
+#        key: ADMIN_KAPTCHA_SESSION_KEY
+#        date: ADMIN_KAPTCHA_SESSION_DATE
