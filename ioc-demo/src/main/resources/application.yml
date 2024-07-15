@@ -30,3 +30,16 @@ dbtypes:
     k1: kk1
     k2: kk2
     k3: kk3
+logging:
+  level:
+    root: info
+    com:
+      xkong:
+        demo: debug
+  file:
+    name: logger/ioc.log
+#  日志分割
+  logback:
+    rollingpolicy:
+      max-file-size: 1KB
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}.%i
