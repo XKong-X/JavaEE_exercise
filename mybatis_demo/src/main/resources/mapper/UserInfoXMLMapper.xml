@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xkong.mybatis_demo.mapper.UserInfoXMLMapper">
+    <resultMap id="XmlBaseMap" type="com.xkong.mybatis_demo.model.UserInfo">
+        <id column="id" property="id"></id>
+        <result column="delete_flag" property="deleteFlag"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="update_time" property="updateTime"></result>
+    </resultMap>
+    
+    <select id="selectAll" resultType="com.xkong.mybatis_demo.model.UserInfo">
+        select * from userinfo
+    </select>
+
+
+    <select id="selectAll2" resultMap="XmlBaseMap">
+        select * from userinfo
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into userinfo (username, password, age, gender, phone)
+        values (#{username}, #{password}, #{age},#{gender},#{phone})
+    </insert>
+
+    <insert id="insert2" useGeneratedKeys="true" keyProperty="id">
+        insert into userinfo (username, password, age, gender, phone)
+        values (#{userInfo.username}, #{userInfo.password}, #{userInfo.age},#{userInfo.gender},#{userInfo.phone})
+    </insert>
+
+    <delete id="delete">
+        delete from userinfo where id=#{id}
+    </delete>
+    
+    <update id="update">
+        update userinfo set gender=#{gender} where id=#{id}
+    </update>
+</mapper>
