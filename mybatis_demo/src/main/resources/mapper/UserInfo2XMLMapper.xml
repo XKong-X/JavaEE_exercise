@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xkong.mybatis_demo.mapper.UserInfo2Mapper">
+    <sql id="selectTable">
+        select * from userinfo
+    </sql>
+    <insert id="insertByXML">
+        insert into userinfo
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            <if test="username !=null">
+                username,
+            </if>
+            <if test="password !=null">
+                password,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="phone != null">
+                phone
+            </if>
+        </trim>
+        values
+        <trim suffixOverrides="," prefix="(" suffix=")">
+            <if test="username !=null">
+                #{username},
+            </if>
+            <if test="password !=null">
+                #{password},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="phone != null">
+                #{phone}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByCondition" resultType="com.xkong.mybatis_demo.model.UserInfo">
+        <include refid="selectTable"></include>
+        <where>
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="age!=null">
+                and age = #{age}
+            </if>
+            <if test="gender">
+                gender = #{gender} /* where 标签会自动补齐或删除 where 和 and */
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByCondition2" resultType="com.xkong.mybatis_demo.model.UserInfo">
+        select * from userinfo
+        where 1=1/* 1=1 用于解决参数全为空的情况 */
+        <trim prefixOverrides="and">
+            <if test="username != null">
+                username = #{username}
+            </if>
+            <if test="age!=null">
+                and age = #{age}
+            </if>
+            <if test="gender">
+                and gender = #{gender}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateByCondition">
+        update userinfo
+        set
+        <trim suffixOverrides=",">
+            <if test="username">
+                username = #{username},
+            </if>
+            <if test="age">
+                age = #{age},
+            </if>
+            <if test="gender">
+                gender = #{gender}
+            </if>
+        </trim>
+        where id = 30
+    </update>
+
+    <update id="updateByCondition2">
+        update userinfo
+        <set>
+            <if test="username">
+                username = #{username},
+            </if>
+            <if test="age">
+                age = #{age},
+            </if>
+            <if test="gender">
+                gender = #{gender}
+            </if>
+        </set>
+        where id = 30
+    </update>
+
+    <delete id="batchDelete">
+        delete from userinfo
+        where id in
+        <foreach collection="ids" separator="," item="id" open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

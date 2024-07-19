@@ -106,4 +106,14 @@ class UserInfoMapperTest {
             log.info("数据修改成功");
         }
     }
+
+    @Test
+    void selectUserBySort() {
+        log.info(userInfoMapper.selectUserBySort("asc").toString());
+    }
+
+    @Test
+    void selectUserByLike() {
+        log.info(userInfoMapper.selectUserByLike("asc").toString());
+    }
 }
