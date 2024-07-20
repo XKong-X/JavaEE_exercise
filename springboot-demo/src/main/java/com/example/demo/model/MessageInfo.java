@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
 import lombok.Data;
 
@@ -14,8 +14,11 @@ import java.util.Date;
  */
 @Data
 public class MessageInfo {
+    private Integer id;
     private String from;
     private String to;
     private String message;
-    private Date CreateTime;
+    private Integer deleteFlag;
+    private Date createTime;
+    private Date updateTime;
 }

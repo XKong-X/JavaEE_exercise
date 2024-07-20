@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.MessageInfo;
+import com.example.demo.service.MessageService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,13 +19,17 @@ import java.util.List;
  * Time: 22:53
  * Version:
  */
+@Slf4j
 @RequestMapping("/message")
 @RestController
 public class MessageController {
-    private List<MessageInfo> messageInfos = new ArrayList<>();
+//    private List<MessageInfo> messageInfos = new ArrayList<>();
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping("/publish")
     public Boolean publishMessage(MessageInfo messageInfo) {
+        log.info("发表留言");
         // 校验数据
         if (!StringUtils.hasLength(messageInfo.getFrom())
                 || !StringUtils.hasLength(messageInfo.getTo())
@@ -31,13 +38,13 @@ public class MessageController {
             return false;
         }
         // 添加留言
-        messageInfos.add(messageInfo);
+        messageService.addMessage(messageInfo);
         System.out.println("添加成功！");
         return true;
     }
 
     @RequestMapping("/getMessageInfo")
     public List<MessageInfo> getMessageInfo() {
-        return messageInfos;
+        return messageService.getMessageInfo();
     }
 }
