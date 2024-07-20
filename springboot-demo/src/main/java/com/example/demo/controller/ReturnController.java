@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.Person;
+import com.example.demo.model.Person;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
