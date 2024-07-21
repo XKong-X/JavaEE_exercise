@@ -23,7 +23,7 @@
             </div>
             <div class="row">
                 <span>密码</span>
-                <input type="password" name="password" id="password" class="form-control">
+                <input type="text" name="password" id="password" class="form-control">
             </div>
             <div class="row">
                 <button type="button" class="btn btn-info btn-lg" onclick="login()">登录</button>
@@ -37,7 +37,7 @@
                 url: "/user/login",
                 type: "post",
                 data: {
-                    username: $("#userName").val(),
+                    userName: $("#userName").val(),
                     password: $("#password").val(),
                 },
                 success: function (result) {

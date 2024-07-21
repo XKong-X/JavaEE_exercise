@@ -1,5 +1,6 @@
 package com.xkong.book.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,7 +19,11 @@ public class BookInfo {
     private String bookName;
     private String author;
     private Integer count;
+
+    // 转成字符串来显示小数
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigDecimal price;
+
     private String publish;
     private Integer status;
     private String statusCN;
