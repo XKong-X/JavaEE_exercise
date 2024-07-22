@@ -1,17 +1,18 @@
 package com.xkong.book.controller;
 
-import com.xkong.book.model.BookInfo;
-import com.xkong.book.model.PageRequest;
-import com.xkong.book.model.PageResult;
-import com.xkong.book.model.UserInfo;
+import com.xkong.book.constant.Constants;
+import com.xkong.book.model.*;
 import com.xkong.book.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,18 +30,27 @@ public class BookController {
     private BookService bookService;
 
     @RequestMapping("/getBookListByPage")
-    public PageResult<BookInfo> getBookListByPage(PageRequest pageRequest) {
+    public Result getBookListByPage(PageRequest pageRequest, HttpSession session) {
         log.info("查询翻页信息, pageRequest:{}", pageRequest);
+        // 登录校验
+        UserInfo userInfo = (UserInfo) session.getAttribute(Constants.SESSION_USER_KEY);
+        if (userInfo == null || userInfo.getId() < 1 || !StringUtils.hasLength(userInfo.getUserName())) {
+            // 未登录
+            return Result.unLogin();
+        }
+        // 校验通过
         if (pageRequest.getPageSize() < 0 || pageRequest.getCurrentPage() < 1) {
-            return null;
+            return Result.fail("参数校验失败!");
         }
         PageResult<BookInfo> bookInfoPageResult = null;
         try {
             bookInfoPageResult = bookService.selectBookInfoByPage(pageRequest);
+            return Result.success(bookInfoPageResult);
         } catch (Exception e) {
             log.error("查询翻页信息错误,e:{}", e);
+            return Result.fail(e.getMessage());
         }
-        return bookInfoPageResult;
+//        return bookInfoPageResult;
     }
 
     // 检查价格是否合理
@@ -93,6 +103,17 @@ public class BookController {
         if (result == 0) {
             log.error("更新图书失败，请联系管理员！");
             return "更新图书失败，请联系管理员！";
+        }
+        return "";
+    }
+
+    @RequestMapping("/batchDelete")
+    public String batchDelete(@RequestParam List<Integer> ids) {
+        log.info("新的批量删除请求, 图书id:{}", ids);
+        Integer result = bookService.batchDelete(ids);
+        if (result < 1) {
+            log.error("批量删除失败, ids:{}", ids);
+            return "批量删除失败, 请联系管理员!";
         }
         return "";
     }

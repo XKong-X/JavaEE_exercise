@@ -1,5 +1,6 @@
 package com.xkong.book.controller;
 
+import com.xkong.book.constant.Constants;
 import com.xkong.book.model.UserInfo;
 import com.xkong.book.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class UserController {
         if (password.equals(userInfo.getPassword())) {
             // 存储 session
             userInfo.setPassword("");
-            session.setAttribute("userName", userName);
+            session.setAttribute(Constants.SESSION_USER_KEY, userInfo);
             return true;
         }
         System.out.println("用户名或密码错误");

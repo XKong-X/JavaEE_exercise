@@ -38,4 +38,7 @@ public interface BookInfoMapper {
 
     // 修改图书信息
     Integer updateBook(BookInfo bookInfo);
+
+    // 批量删除
+    Integer batchDelete(List<Integer> ids);
 }
