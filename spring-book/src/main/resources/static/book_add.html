@@ -70,11 +70,14 @@
                 url: "/book/addBook",
                 data: $("#addBook").serialize(),// 提交整个 form 表单
                 success:function (result) {
-                    if (result == "") {
+                    console.log(result);
+                    console.log(typeof result);
+                    // JSON.parse(result);
+                    if (result != null && result.code == "SUCCESS" && result.data == "") {
                         alert("添加成功");
                         //location.href = "book_list.html";
                     } else {
-                        alert(result);
+                        alert(result.errMsg);
                     }
                 }
             });

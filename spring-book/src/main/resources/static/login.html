@@ -41,7 +41,8 @@
                     password: $("#password").val(),
                 },
                 success: function (result) {
-                    if (result) {
+                    console.log(result);
+                    if (result != null && result.code == "SUCCESS" && result.data == true) {
                         location.href = "book_list.html";
                     } else {
                         alert("用户名或密码错误！")

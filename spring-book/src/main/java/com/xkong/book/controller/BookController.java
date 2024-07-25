@@ -33,11 +33,11 @@ public class BookController {
     public Result getBookListByPage(PageRequest pageRequest, HttpSession session) {
         log.info("查询翻页信息, pageRequest:{}", pageRequest);
         // 登录校验
-        UserInfo userInfo = (UserInfo) session.getAttribute(Constants.SESSION_USER_KEY);
-        if (userInfo == null || userInfo.getId() < 1 || !StringUtils.hasLength(userInfo.getUserName())) {
-            // 未登录
-            return Result.unLogin();
-        }
+//        UserInfo userInfo = (UserInfo) session.getAttribute(Constants.SESSION_USER_KEY);
+//        if (userInfo == null || userInfo.getId() < 1 || !StringUtils.hasLength(userInfo.getUserName())) {
+//            // 未登录
+//            return Result.unLogin();
+//        }
         // 校验通过
         if (pageRequest.getPageSize() < 0 || pageRequest.getCurrentPage() < 1) {
             return Result.fail("参数校验失败!");
@@ -61,7 +61,7 @@ public class BookController {
         return true;
     }
 
-    @RequestMapping("/addBook")
+    @RequestMapping(value = "/addBook", produces = "application/json")
     public String addBook(BookInfo bookInfo) {
         log.info("新的添加图书请求，bookInfo:{}", bookInfo);
         // 校验
@@ -96,7 +96,7 @@ public class BookController {
         return bookInfo;
     }
 
-    @RequestMapping("/updateBook")
+    @RequestMapping(value = "/updateBook", produces = "application/json")
     public String updateBook(BookInfo bookInfo) {
         log.info("新的修改图书信息的请求，bookInfo:{}", bookInfo);
         Integer result = bookService.updateBook(bookInfo);
@@ -107,7 +107,7 @@ public class BookController {
         return "";
     }
 
-    @RequestMapping("/batchDelete")
+    @RequestMapping(value = "/batchDelete", produces = "application/json")
     public String batchDelete(@RequestParam List<Integer> ids) {
         log.info("新的批量删除请求, 图书id:{}", ids);
         Integer result = bookService.batchDelete(ids);

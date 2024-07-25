@@ -63,16 +63,28 @@
             type: "get",
             url: "/book/queryBookInfoById"+location.search,
             success:function(result) {
-                if (result != null) {
-                    $("#bookId").val(result.id);
-                    $("#bookName").val(result.bookName);
-                    $("#bookAuthor").val(result.author);
-                    $("#bookStock").val(result.count);
-                    $("#bookPrice").val(result.price);
-                    $("#bookPublisher").val(result.publish);
-                    $("#bookStatus").val(result.status);
+                if (result != null && result.code == "SUCCESS") {
+                    var book = result.data;
+                    if (result != null) {
+                        $("#bookId").val(book.id);
+                        $("#bookName").val(book.bookName);
+                        $("#bookAuthor").val(book.author);
+                        $("#bookStock").val(book.count);
+                        $("#bookPrice").val(book.price);
+                        $("#bookPublisher").val(book.publish);
+                        $("#bookStatus").val(book.status);
+                    } else {
+                        alert("未查到图书信息，可能是服务器繁忙或图书不存在！")
+                    }
                 } else {
-                    alert("未查到图书信息，可能是服务器繁忙或图书不存在！")
+                    alert(result.errMsg);
+                }
+            },
+            error:function (error) {
+                console.log(error);
+                // 未登陆
+                if (error != null && error.status == 401) {
+                    location.href = "login.html";
                 }
             }
         });
@@ -82,10 +94,17 @@
                 url: "/book/updateBook",
                 data: $("#updateBook").serialize(),
                 success:function (result) {
-                    if (result == "") {
+                    if (result != null && result.code == "SUCCESS" && result.data == "") {
                         alert("修改成功！");
                     } else {
                         alert("修改失败，请确认无误后再次尝试");
+                    }
+                },
+                error:function (error) {
+                    console.log(error);
+                    // 未登陆
+                    if (error != null && error.status == 401) {
+                        location.href = "login.html";
                     }
                 }
             });
